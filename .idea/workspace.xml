@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="87d48906-d72a-48ef-89fa-bbd04cd5063d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/users/migrations/__init__.py" afterDir="false" />
+    <list default="true" id="87d48906-d72a-48ef-89fa-bbd04cd5063d" name="Default Changelist" comment="创建 users app">
+      <change afterPath="$PROJECT_DIR$/apps/users/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/image/avatar/default.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shuadan_system/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuadan_system/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/users/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/users/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/users/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shuadan_system/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuadan_system/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +42,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/media/image/avatar" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -50,6 +50,7 @@
       <recent name="E:\workspace\django\shuadan_system\apps" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\workspace\django\shuadan_system\media\image\avatar" />
       <recent name="E:\workspace\django\shuadan_system" />
     </key>
   </component>
@@ -100,7 +101,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602926608968</updated>
-      <workItem from="1602926611015" duration="2102000" />
+      <workItem from="1602926611015" duration="4701000" />
     </task>
     <task id="LOCAL-00001" summary="上传依赖">
       <created>1602928388090</created>
@@ -109,7 +110,21 @@
       <option name="project" value="LOCAL" />
       <updated>1602928388090</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="创建 users app">
+      <created>1602929290311</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1602929290311</updated>
+    </task>
+    <task id="LOCAL-00003" summary="创建 users app">
+      <created>1602929353846</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1602929353846</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,21 +132,22 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="上传依赖" />
-    <option name="LAST_COMMIT_MESSAGE" value="上传依赖" />
+    <MESSAGE value="创建 users app" />
+    <option name="LAST_COMMIT_MESSAGE" value="创建 users app" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="558" y="24" key="CommitChangelistDialog2" timestamp="1602929289738">
+    <state x="558" y="24" key="CommitChangelistDialog2" timestamp="1602931963606">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="558" y="24" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1602929289738" />
+    <state x="558" y="24" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1602931963606" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1602926633876">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1602926633876" />
-    <state x="552" y="249" key="Vcs.Push.Dialog.v2" timestamp="1602929296380">
+    <state x="552" y="249" key="Vcs.Push.Dialog.v2" timestamp="1602929360395">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="249" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1602929296380" />
+    <state x="552" y="249" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1602929360395" />
     <state x="633" y="293" key="git4idea.merge.GitPullDialog" timestamp="1602928468376">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
