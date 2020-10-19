@@ -1,0 +1,492 @@
+{% extends 'sh_base.html' %}
+{% load static %}
+{% load teacher_filters %}
+
+{% block custom_js_1 %}
+    <script src="{% static 'js/theme.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body  am-fr">
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                <div class="am-form-group">
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <button type="button" class="am-btn am-btn-default am-btn-primary add-info"
+                                                    onclick="add_info()"><span
+                                                    class="am-icon-archive"></span> 新增
+                                            </button>
+                                        </div>
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <button class="am-btn am-btn-default am-btn-success am-btn-xs"
+                                                    onclick="download_info_file()"><span
+                                                    class="am-icon-download"></span> 导出
+                                            </button>
+                                        </div>
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <form method="post" enctype="multipart/form-data"
+                                                  action="{% url 'file:upload_delivery_excel' %}?next={{ request.get_full_path }}"
+                                                  id="upload-image" style="padding-top: 0px;">
+                                                <div class="am-form-group am-form-file upload-excel"
+                                                     style="margin-bottom: 0px">
+                                                    <button type="button"
+                                                            class="am-btn am-btn-default am-btn-warning am-btn-xs"><span
+                                                            class="am-icon-upload"></span> 导入
+                                                    </button>
+                                                    <input id="upload-inp" type="file" multiple="" name="excel_file"
+                                                           onchange="upload(this)">
+                                                    {% csrf_token %}
+                                                </div>
+                                            </form>
+                                        </div>
+                                        {% if "sh_" in user.username %}
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <button type="button"
+                                                        class="am-btn am-btn-default am-btn-danger" onclick="delete_delivery(this)"  value="{{ request.get_full_path }}"><span
+                                                        class="am-icon-trash-o"></span> 删除
+                                                </button>
+                                            </div>
+                                        {% endif %}
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <button class="am-btn am-btn-default am-btn-secondary am-btn-xs"
+                                                    onclick="download_template_file(this)" value="物流信息提交模板.xlsx"><span
+                                                    class="am-icon-download"></span> 下载模板
+                                            </button>
+                                        </div>
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <button class="am-btn am-btn-default am-btn-success am-btn-xs"
+                                                    onclick="download_all_info_file()"><span
+                                                    class="am-icon-download"></span> 全部导出
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                                <div class="am-form-group tpl-table-list-select">
+                                    <select id="search-type" data-am-selected="{btnSize: 'sm'}">
+                                        <option value="track_number" {% if search_type == "track_number" %}selected{% endif %}>运单追踪号</option>
+                                        <option value="company" {% if search_type == "company" %}selected{% endif %}>公司</option>
+                                        <option value="people" {% if search_type == "people" %}selected{% endif %}>运营</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " placeholder="请输入关键词查找"
+                                           id="search_keywords">
+                                    <span class="am-input-group-btn">
+            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
+                    type="button" id="jsSearchBtn" onclick="yy_search_info()"></button>
+          </span>
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12">
+                                <table width="100%"
+                                       class="am-table am-table-compact am-table-striped tpl-table-black am-table-centered">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAll"></th>
+                                        <th>发货日期</th>
+                                        <th>发货公司</th>
+                                        <th>渠道</th>
+                                        <th>站点</th>
+                                        <th>运营</th>
+                                        <th>国家</th>
+                                        <th>运单追踪号</th>
+                                        <th>实重</th>
+                                        <th>材积重</th>
+                                        <th>实际收费重量</th>
+                                        <th>件数</th>
+                                        <th>单价包含纺织等的附加费</th>
+                                        <th>其他附加费用</th>
+                                        <th>总运费</th>
+                                        <th>到货日期</th>
+                                        <th>是否全部到货</th>
+                                        <th>结算</th>
+                                        <th>其他备注</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for info in all_infos.object_list %}
+                                        <tr class="gradeX">
+                                            <td style="vertical-align:middle" value="{{ info.id }}">
+                                                <input name="ids" type="checkbox" class="record-checkbox"
+                                                       value="{{ info.id }}">
+                                            </td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.send_time | date:"Y-m-d" }}">{{ info.send_time | date:"Y-m-d" | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.send_company | default_if_none:"" }}">{{ info.send_company | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.channel | default_if_none:"" }}">{{ info.channel | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.site | default_if_none:"" }}">{{ info.site | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.user.username }}">
+                                                {% if  info.user.nick_name %}{{ info.user.nick_name }}{% else %}
+                                                    {{ info.user.username }}{% endif %}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.country | default_if_none:"" }}">{{ info.country | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.track_number | default_if_none:"" }}">{{ info.track_number | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.net_weight | default_if_none:"" }}">{{ info.net_weight | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.volume_weight | default_if_none:"" }}">{{ info.volume_weight | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.actual_charged_weight | default_if_none:"" }}">{{ info.actual_charged_weight | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.pieces_number | default_if_none:"" }}">{{ info.pieces_number | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.includes_price | default_if_none:"" }}">{{ info.includes_price | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.other_price | default_if_none:"" }}">{{ info.other_price | truncate_word | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.total_price | default_if_none:"" }}">{{ info.total_price | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.express_time | date:"Y-m-d" }}">{{ info.express_time | date:"Y-m-d" | default_if_none:""  }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.express_status | default_if_none:"" }}">{{ info.get_express_status_display }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.settlement | default_if_none:"" }}">{{ info.settlement | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.order_remark | default_if_none:"" }}">{{ info.order_remark | default_if_none:"" }}</td>
+                                            <td class="am-text-middle">
+                                                <button type="button"
+                                                        class="am-btn am-btn-default am-btn-secondary am-btn-xs"
+                                                        onclick="edit_info(this)"><span
+                                                        class="am-icon-pencil"></span>编辑
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="am-u-lg-12 am-cf">
+
+                                <div class="am-fr">
+                                    <ul class="am-pagination tpl-pagination">
+                                        {% if all_infos.has_previous %}
+                                            <li class="am-disabled"><a
+                                                    href="?{{ all_infos.previous_page_number.querystring }}">«</a>
+                                            </li>
+                                        {% endif %}
+                                        {% for page in all_infos.pages %}
+                                            {% if page %}
+                                                {% ifequal page all_infos.number %}
+                                                    <li class="am-active"><a
+                                                            href="?{{ page.querystring }}">{{ page }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+                                                    </li>
+                                                {% endifequal %}
+                                            {% else %}
+                                                <li class="none"><a href="">...</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if all_infos.has_next %}
+                                            <li><a href="?{{ all_infos.next_page_number.querystring }}">»</a></li>
+                                        {% endif %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-prompt widget-body am-fr" tabindex="-1" id="add-prompt">
+        <div class="am-modal-dialog">
+            <form class="am-form tpl-form-line-form" method="post"
+                  action="{% url 'deliveries:add_info' %}?next={{ request.get_full_path }}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="am-form-group">
+                    <label for="send_time" class="am-u-sm-3 am-form-label">发货日期</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="am-form-field tpl-form-no-bg" placeholder="请输入发货日期"
+                               name="send_time"
+                               data-am-datepicker="" readonly="">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="send_company" class="am-u-sm-3 am-form-label">发货公司</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入发货公司" name="send_company">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="channel" class="am-u-sm-3 am-form-label">渠道</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入渠道" name="channel">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="site" class="am-u-sm-3 am-form-label">站点</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入站点" name="site">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="country" class="am-u-sm-3 am-form-label">国家</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入国家" name="country">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="track_number" class="am-u-sm-3 am-form-label">运单追踪号</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入运单追踪号" name="track_number">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="net_weight" class="am-u-sm-3 am-form-label">实重</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入实重" name="net_weight">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="volume_weight" class="am-u-sm-3 am-form-label">材积重</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入材积重" name="volume_weight">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="actual_charged_weight" class="am-u-sm-3 am-form-label">实际收费重量</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入实际收费重量" name="actual_charged_weight">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="pieces_number" class="am-u-sm-3 am-form-label">件数</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入件数" name="pieces_number">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="includes_price" class="am-u-sm-3 am-form-label">纺织等的附加费</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入单价包含纺织等的附加费" name="includes_price">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="other_price" class="am-u-sm-3 am-form-label">其他附加费用</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入其他附加费用" name="other_price">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="total_price" class="am-u-sm-3 am-form-label">总运费</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入总运费" name="total_price">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="express_time" class="am-u-sm-3 am-form-label">到货日期</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="am-form-field tpl-form-no-bg" placeholder="请输入到货日期"
+                               name="express_time" data-am-datepicker="" readonly="">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="express_status" class="am-u-sm-3 am-form-label">是否全部到货</label>
+                    <div class="am-u-sm-9">
+                        <label class="am-fl">
+                            <select style="
+                                    height: 35px;
+                                    width: 200px;
+                                    border: 1px solid #e6e6e6;
+                                    padding-left: 8px;
+                                    font-size: 16px;
+                                    font-weight: 400;
+                                " name="express_status">
+                                <option value="already express">已全部到货</option>
+                                <option value="not express">未全部到货</option>
+                            </select>
+                            <i class="am-selected-icon am-icon-caret-down"
+                               style="position: absolute; top: 5px; left: 193px;"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="settlement" class="am-u-sm-3 am-form-label">结算</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入结算" name="settlement">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="order_remark" class="am-u-sm-3 am-form-label">其他备注</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入其他备注" name="order_remark">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-u-sm-9 am-u-sm-push-3 am-fr">
+                        <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="am-modal am-modal-prompt widget-body am-fr" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <form class="am-form tpl-form-line-form" method="post"
+                  action="{% url 'deliveries:edit_info' %}?next={{ request.get_full_path }}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="info_id" name="info_id">
+                <div class="am-form-group">
+                    <label for="send_time" class="am-u-sm-3 am-form-label">发货日期</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="am-form-field tpl-form-no-bg" placeholder="请输入发货日期" id="send_time"
+                               name="send_time" data-am-datepicker="" readonly="">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="send_company" class="am-u-sm-3 am-form-label">发货公司</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入发货公司" id="send_company" name="send_company">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="channel" class="am-u-sm-3 am-form-label">渠道</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入渠道" id="channel" name="channel">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="site" class="am-u-sm-3 am-form-label">站点</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入站点" id="site" name="site">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="country" class="am-u-sm-3 am-form-label">国家</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入国家" id="country" name="country">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="track_number" class="am-u-sm-3 am-form-label">运单追踪号</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入运单追踪号" id="track_number" name="track_number">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="net_weight" class="am-u-sm-3 am-form-label">实重</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入实重" id="net_weight" name="net_weight">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="volume_weight" class="am-u-sm-3 am-form-label">材积重</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入材积重" id="volume_weight" name="volume_weight">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="actual_charged_weight" class="am-u-sm-3 am-form-label">实际收费重量</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入实际收费重量" id="actual_charged_weight"
+                               name="actual_charged_weight">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="pieces_number" class="am-u-sm-3 am-form-label">件数</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入件数" id="pieces_number" name="pieces_number">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="includes_price" class="am-u-sm-3 am-form-label">纺织等的附加费</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入单价包含纺织等的附加费" id="includes_price" name="includes_price">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="other_price" class="am-u-sm-3 am-form-label">其他附加费用</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入其他附加费用" id="other_price" name="other_price">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="total_price" class="am-u-sm-3 am-form-label">总运费</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入总运费" id="total_price" name="total_price">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="express_time" class="am-u-sm-3 am-form-label">到货日期</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="am-form-field tpl-form-no-bg" placeholder="请输入到货日期"
+                               id="express_time"
+                               name="express_time" data-am-datepicker="" readonly="">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="express_status" class="am-u-sm-3 am-form-label">是否全部到货</label>
+                    <div class="am-u-sm-9">
+                        <label class="am-fl">
+                            <select id="express_status" style="
+                                    height: 35px;
+                                    width: 200px;
+                                    border: 1px solid #e6e6e6;
+                                    padding-left: 8px;
+                                    font-size: 16px;
+                                    font-weight: 400;
+                                " name="express_status">
+                                <option value="already express">已全部到货</option>
+                                <option value="not express">no</option>
+                            </select>
+                            <i class="am-selected-icon am-icon-caret-down"
+                               style="position: absolute; top: 5px; left: 193px;"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="settlement" class="am-u-sm-3 am-form-label">结算</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入结算" id="settlement" name="settlement">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="order_remark" class="am-u-sm-3 am-form-label">其他备注</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入其他备注" id="order_remark" name="order_remark">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-u-sm-9 am-u-sm-push-3 am-fr">
+                        <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block custom_js_2 %}
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.datatables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/customize.js' %}"></script>
+{% endblock %}

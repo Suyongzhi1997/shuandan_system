@@ -105,3 +105,37 @@ class EditUserPasswordView(LoginRequiredMixin, View):
             user.password = make_password(password2)
             user.save()
         return redirect(next_url)
+
+
+def pag_not_found(request, exception):
+    # 全局404处理函数
+    if request.user.username.startswith('yy'):
+        return redirect(reverse('record:yy_check_records'))
+    elif request.user.username.startswith('sh'):
+        return redirect(reverse('record:sh_check_records'))
+    elif request.user.username.startswith('sd'):
+        return redirect(reverse('record:sd_brush_records'))
+    else:
+        return redirect(reverse('record:sdgs_brush_records'))
+
+
+def page_error(request):
+    # 全局500处理函数
+    if request.user.username.startswith('yy'):
+        return redirect(reverse('record:yy_check_records'))
+    elif request.user.username.startswith('sh'):
+        return redirect(reverse('record:sh_check_records'))
+    elif request.user.username.startswith('sd'):
+        return redirect(reverse('record:sd_brush_records'))
+    else:
+        return redirect(reverse('record:sdgs_brush_records'))
+
+
+def ratelimit_error(request, exception=None):
+    if isinstance(exception, Ratelimited):
+        data = {
+            "url": "http://127.0.0.1:8000/record/sdgs/403/"
+        }
+        return JsonResponse(data)
+        # return render(request, '403.html')
+    return HttpResponseForbidden('Forbidden')

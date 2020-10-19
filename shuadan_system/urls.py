@@ -19,13 +19,30 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 from django.urls import path, re_path, include
 
+from shuadan_system.settings import MEDIA_ROOT
+
 from users.views import LoginView, LogoutView
+from records.views import IndexView
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('xadmin/', xadmin.site.urls),
 
     path('', LoginView.as_view()),
+    path('yy/', IndexView.as_view(), name='index'),
+    path('kf/', KaifaIndexView.as_view(), name='kf_index'),
 
-    path('user/', include('users.urls', namespace='user'))
+    # record
+    path('record/', include('records.urls', namespace='record')),
+    path('file/', include('files.urls', namespace='file')),
+    path('user/', include('users.urls', namespace='user')),
+    path('delivery/', include('delivery.urls', namespace='deliveries')),
+    path('promote/', include('promote.urls', namespace='promote')),
+
+    re_path(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 ]
+
+handler404 = 'users.views.pag_not_found'
+handler500 = 'users.views.page_error'
+handler403 = 'users.views.ratelimit_error'

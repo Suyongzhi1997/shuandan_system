@@ -1,0 +1,64 @@
+{% extends 'sh_base.html' %}
+
+{% load static %}
+{% load teacher_filters %}
+
+{% block custom_js_1 %}
+    <script src="{% static 'js/theme.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body  am-fr">
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                <div class="am-form-group">
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12">
+                                <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black "
+                                       id="example-r">
+                                    <thead>
+                                    <tr>
+                                        <th>年份</th>
+                                        <th>月份</th>
+                                        <th>产品费用</th>
+                                        <th>刷单总费用</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for brush_money in  brush_moneys %}
+                                        <tr class="gradeX">
+                                            <td>{{ brush_money.brush_year }}</td>
+                                            <td>{{ brush_money.brush_month }}</td>
+                                            <td>{{ brush_money.product_cost }}</td>
+                                            <td>{{ brush_money.brush_money }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js_2 %}
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.datatables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/customize.js' %}"></script>
+{% endblock %}
+

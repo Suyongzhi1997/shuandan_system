@@ -1,0 +1,92 @@
+{% extends 'sh_base.html' %}
+
+{% load static %}
+{% load teacher_filters %}
+
+{% block custom_js_1 %}
+    <script src="{% static 'js/theme.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body  am-fr">
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                <div class="am-form-group">
+                                    <div class="am-btn-toolbar">
+{#                                        <div class="am-btn-group am-btn-group-xs">#}
+{#                                            <div class="am-btn-group am-btn-group-xs">#}
+{#                                            <button class="am-btn am-btn-default am-btn-success am-btn-xs"#}
+{#                                                    onclick="brush_money_download_file()"><span#}
+{#                                                    class="am-icon-download"></span> 导出#}
+{#                                            </button>#}
+{#                                        </div>#}
+{#                                        </div>#}
+                                    </div>
+                                </div>
+                            </div>
+{#                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">#}
+{#                                <div class="am-form-group tpl-table-list-select">#}
+{#                                    <select id="search-type" data-am-selected="{btnSize: 'sm'}">#}
+{#                                        <option value="datetime">年月</option>#}
+{#                                        <option value="people">运营人员</option>#}
+{#                                    </select>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">#}
+{#                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">#}
+{#                                    <input type="text" class="am-form-field " placeholder="请输入关键词查找"#}
+{#                                           id="kf_search_keywords">#}
+{#                                    <span class="am-input-group-btn">#}
+{#            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"#}
+{#                    type="button" id="jsSearchBtn" onclick="kf_search_record()"></button>#}
+{#          </span>#}
+{#                                </div>#}
+{#                            </div>#}
+                            <div class="am-u-sm-12">
+                                <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black "
+                                       id="example-r">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAll"></th>
+                                        <th>年份</th>
+                                        <th>月份</th>
+                                        <th>总运费</th>
+                                        <th>物流公司</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for brush_money in  brush_moneys %}
+                                        <tr class="gradeX">
+                                            <td style="vertical-align:middle" value="{{ brush_money.id }}">
+                                                <input name="ids" type="checkbox" class="record-checkbox"
+                                                       value="{{ brush_money.id }}">
+                                            </td>
+                                            <td>{{ brush_money.brush_year }}</td>
+                                            <td>{{ brush_money.brush_month }}</td>
+                                            <td>{{ brush_money.freight }}</td>
+                                            <td>{{ brush_money.send_company }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js_2 %}
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.datatables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/customize.js' %}"></script>
+{% endblock %}
+

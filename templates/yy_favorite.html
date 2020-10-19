@@ -1,0 +1,355 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load teacher_filters %}
+
+{% block custom_js_1 %}
+    <script src="{% static 'js/theme.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body  am-fr">
+
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-9">
+                                <div class="am-form-group">
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                        </div>
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <button class="am-btn am-btn-default am-btn-success am-btn-xs"
+                                                    onclick="unfavorite(this)" value="{{ request.get_full_path }}"><span
+                                                    class="am-icon-download"></span> 取消收藏
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " placeholder="请输入ASIN查找"
+                                           id="search_keywords">
+                                    <span class="am-input-group-btn">
+            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
+                    type="button" id="jsSearchBtn" onclick="search_record()"></button>
+          </span>
+                                </div>
+                            </div>
+
+                            <div class="am-u-sm-12">
+                                <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
+                                    <thead>
+                                    <tr>
+                                        <th><input  type="checkbox" id="selectAll"></th>
+                                        <th>提交日期</th>
+                                        <th>站点</th>
+                                        <th>店铺</th>
+                                        <th>中文名</th>
+                                        <th>SKU</th>
+                                        <th>ASIN</th>
+                                        <th>刷单词</th>
+                                        <th>评价数量</th>
+                                        <th>免评数量</th>
+                                        <th>关键词页数</th>
+                                        <th>主图片</th>
+                                        <th>关键词链接</th>
+                                        <th>产品售价</th>
+                                        <th>新品/老品</th>
+                                        <th>新店/老店</th>
+                                        <th>产品周单量</th>
+                                        <th>产品星级</th>
+                                        <th title="提示">产品利润(RMB)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for record in all_records.object_list %}
+                                        <tr class="gradeX">
+                                            <td style="vertical-align:middle" value="{{ record.record.id }}">
+                                                <input name="ids" type="checkbox" class="record-checkbox"
+                                                       value="{{ record.record.id }}">
+                                            </td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.add_time }}">{{ record.record.add_time | date:"Y-m-d" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.site }}">{{ record.record.site | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.shop }}">{{ record.record.shop | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.product_chinese_name }}">{{ record.record.product_chinese_name | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.sku }}">{{ record.record.sku | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.asin }}">{{ record.record.asin | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.order_word }}">{{ record.record.order_word | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.review_number }}">{{ record.record.review_number | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.free_review_number }}">{{ record.record.free_review_number | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.key_word_page_number }}">{{ record.record.key_word_page_number | truncate_word }}</td>
+                                            {% if record.record.main_image %}
+                                                <td>
+                                                    <form method="post" enctype="multipart/form-data"
+                                                          action="{% url 'record:upload_image' %}?next={{ request.get_full_path }}"
+                                                          id="upload-image2" class="upload-image"
+                                                          style="padding-top: 20px;">
+                                                        <div class="am-form-group am-form-file">
+                                                            <img src="{{ MEDIA_URL }}{{ record.record.main_image }}"
+                                                                 class="tpl-table-line-img" alt="">
+                                                            <input id="upload-inp2" type="file" multiple=""
+                                                                   name="main_image" onchange="upload(this)">
+                                                            <input type="hidden" value="{{ record.record.id }}"
+                                                                   name="record_id">
+                                                            {% csrf_token %}
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            {% else %}
+                                                <td align="center" style="vertical-align:middle;">
+                                                    <form method="post" enctype="multipart/form-data"
+                                                          action="{% url 'record:upload_image' %}?next={{ request.get_full_path }}"
+                                                          id="upload-image" style="padding-top: 20px;">
+                                                        <div class="am-form-group am-form-file">
+                                                            <button type="button"
+                                                                    class="am-btn am-btn-sm" id="uploadChecks">
+                                                                <i class="am-icon-cloud-upload"></i> 添加主图
+                                                            </button>
+                                                            <input id="upload-inp" type="file" multiple=""
+                                                                   name="main_image" onchange="upload(this)">
+                                                            <input type="hidden" value="{{ record.record.id }}"
+                                                                   name="record_id">
+                                                            {% csrf_token %}
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            {% endif %}
+
+                                            <td class="am-text-middle" title="{{ record.record.key_word_link }}"><a
+                                                    href="https://{{ record.record.key_word_link }}"
+                                                    target="_blank">{{ record.record.key_word_link | truncate_word }}</a>
+                                            </td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.c_price }}">{{ record.record.c_price | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.get_product_old_or_new_display }}">{{ record.record.get_product_old_or_new_display }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.get_shop_old_or_new_display }}">{{ record.record.get_shop_old_or_new_display }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.product_week_flow }}">{{ record.record.product_week_flow }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.product_star }}">{{ record.record.product_star }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record.product_profit }}">{{ record.record.product_profit }}</td>
+                                            <td class="am-text-middle">
+                                                <button type="button"
+                                                        class="am-btn am-btn-default am-btn-secondary edit-record am-btn-xs"><span
+                                                        class="am-icon-pencil"></span>编辑
+                                                </button>
+{#                                                <form action="{% url 'record:delete_record' %}?next={{ request.get_full_path }}"#}
+{#                                                      method="post">#}
+{#                                                    {% csrf_token %}#}
+{#                                                    <input type="hidden" value="{{ record.id }}" name="record_id">#}
+{#                                                    <button type="submit"#}
+{#                                                            class="am-btn am-btn-default am-btn-danger am-btn-xs"#}
+{#                                                            style="margin-top: 3px;"><span#}
+{#                                                            class="am-icon-trash"></span>删除#}
+{#                                                    </button>#}
+{#                                                </form>#}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="am-u-lg-12 am-cf">
+
+                                <div class="am-fr">
+                                    <ul class="am-pagination tpl-pagination">
+                                        {% if all_records.has_previous %}
+                                            <li class="am-disabled"><a
+                                                    href="?{{ all_records.previous_page_number.querystring }}">«</a>
+                                            </li>
+                                        {% endif %}
+                                        {% for page in all_records.pages %}
+                                            {% if page %}
+                                                {% ifequal page all_records.number %}
+                                                    <li class="am-active"><a
+                                                            href="?{{ page.querystring }}">{{ page }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+                                                    </li>
+                                                {% endifequal %}
+                                            {% else %}
+                                                <li class="none"><a href="">...</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if all_records.has_next %}
+                                            <li><a href="?{{ all_records.next_page_number.querystring }}">»</a></li>
+                                        {% endif %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-prompt widget-body am-fr" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <form class="am-form tpl-form-line-form" method="post"
+                  action="{% url 'record:operation_edit_record' %}?next={{ request.get_full_path }}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="record_id" id="record_id">
+                <div class="am-form-group">
+                    <label for="site" class="am-u-sm-3 am-form-label">站点</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" id="site" placeholder="请输入站点" name="site">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="shop" class="am-u-sm-3 am-form-label">店铺</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入店铺" id="shop" name="shop">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="product_chinese_name" class="am-u-sm-3 am-form-label">产品中文名</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入产品中文名" id="product_chinese_name" name="product_chinese_name">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="SKU" class="am-u-sm-3 am-form-label">SKU</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入SKU" id="SKU" name="SKU">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="ASIN" class="am-u-sm-3 am-form-label">ASIN</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入ASIN" id="ASIN" name="ASIN">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="order_word" class="am-u-sm-3 am-form-label">刷单词</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入刷单词" id="order_word" name="order_word">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="review_number" class="am-u-sm-3 am-form-label">评价数量</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入评价数量" id="review_number" name="review_number">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="free_review_number" class="am-u-sm-3 am-form-label">免评数量</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入免评数量" id="free_review_number" name="free_review_number">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="key_word_page_number" class="am-u-sm-3 am-form-label">关键词页数</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入关键词页数" id="key_word_page_number" name="key_word_page_number">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="key_word_link" class="am-u-sm-3 am-form-label">关键词链接</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入关键词链接" id="key_word_link" name="key_word_link">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="c_price" class="am-u-sm-3 am-form-label">产品售价</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入产品售价" id="c_price" name="c_price">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="product_old_or_new" class="am-u-sm-3 am-form-label">新品/老品</label>
+                    <div class="am-u-sm-9">
+                        <label class="am-fl">
+                            <select id="product_old_or_new" style="
+                                    height: 35px;
+                                    width: 200px;
+                                    border: 1px solid #e6e6e6;
+                                    padding-left: 8px;
+                                    font-size: 16px;
+                                    font-weight: 400;
+                                " name="product_old_or_new">
+                                <option value="xp">新品</option>
+                                <option value="lp">老品</option>
+                            </select>
+                            <i class="am-selected-icon am-icon-caret-down"
+                               style="position: absolute; top: 5px; left: 193px;"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="shop_old_or_new" class="am-u-sm-3 am-form-label">新店/老店</label>
+                    <div class="am-u-sm-9">
+                        <label class="am-fl">
+                            <select id="shop_old_or_new" style="
+                                    height: 35px;
+                                    width: 200px;
+                                    border: 1px solid #e6e6e6;
+                                    padding-left: 8px;
+                                    font-size: 16px;
+                                    font-weight: 400;
+                                " name="shop_old_or_new">
+                                <option value="xd">新店</option>
+                                <option value="ld">老店</option>
+                            </select>
+                            <i class="am-selected-icon am-icon-caret-down"
+                               style="position: absolute; top: 5px; left: 193px;"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="product_week_flow" class="am-u-sm-3 am-form-label">产品周单量</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入产品周单量" id="product_week_flow" name="product_week_flow">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="product_star" class="am-u-sm-3 am-form-label">产品星级</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入产品星级" id="product_star" name="product_star">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="product_profit" class="am-u-sm-3 am-form-label">产品利润(RMB)</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入产品利润(RMB)" id="product_profit" name="product_profit">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <div class="am-u-sm-9 am-u-sm-push-3 am-fr">
+                        <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js_2 %}
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.datatables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/customize.js' %}"></script>
+{% endblock %}

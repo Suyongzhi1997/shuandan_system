@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load teacher_filters %}
+
+{% block custom_js_1 %}
+    <script src="{% static 'js/theme.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body  am-fr">
+
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-9">
+                                <div class="am-form-group">
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-12 am-u-lg-3" style="padding-bottom:14px;">
+                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " placeholder="请输入ASIN查找"
+                                           id="search_keywords">
+                                    <span class="am-input-group-btn">
+            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
+                    type="button" id="jsSearchBtn" onclick="search_record()"></button>
+          </span>
+                                </div>
+                            </div>
+
+                            <div class="am-u-sm-12">
+                                <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black am-table-centered">
+                                    <thead>
+                                    <tr>
+{#                                        <th><input  type="checkbox" id="selectAll"></th>#}
+                                        <th>产品ASIN</th>
+                                        <th>销售价格</th>
+                                        <th>采购成本</th>
+                                        <th>毛利润</th>
+                                        <th>上架时间</th>
+{#                                        <th>产品刷单总数量</th>#}
+                                        <th>最近30天销量</th>
+                                        <th>最近7天销量</th>
+                                        <th>feedback</th>
+                                        <th>留评</th>
+                                        <th>直评</th>
+                                        <th>免评</th>
+                                        <th>审核结果</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for record in all_records.object_list %}
+                                        <tr class="gradeX">
+{#                                            <td style="vertical-align:middle" value="{{ record.id }}">#}
+{#                                                <input name="ids" type="checkbox" class="record-checkbox" value="{{ record.id }}">#}
+{#                                            </td>#}
+                                            <td class="am-text-middle"
+                                                title="{{ record.asin }}">{{ record.asin }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.c_price }}">{{ record.c_price }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.purchase_cost }}">{{ record.purchase_cost }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.product_profit }}">{{ record.product_profit }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.product_upload_time | date:"Y-m-d" }}">{{ record.product_upload_time | date:"Y-m-d" }}</td>
+{#                                            <td class="am-text-middle"#}
+{#                                                title="{{ record.brush_number }}">{{ record.brush_number }}</td>#}
+                                            <td class="am-text-middle"
+                                                title="{{ record.sale_30_number }}">{{ record.sale_30_number }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.sale_7_number }}">{{ record.sale_7_number }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.feedback }}">{{ record.feedback }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.review_number }}">{{ record.review_number }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.direct_review }}">{{ record.direct_review }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.free_review_number }}">{{ record.free_review_number }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.get_audit_results_display }}">{{ record.get_audit_results_display }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="am-u-lg-12 am-cf">
+
+                                <div class="am-fr">
+                                    <ul class="am-pagination tpl-pagination">
+                                        {% if all_records.has_previous %}
+                                            <li class="am-disabled"><a
+                                                    href="?{{ all_records.previous_page_number.querystring }}">«</a>
+                                            </li>
+                                        {% endif %}
+                                        {% for page in all_records.pages %}
+                                            {% if page %}
+                                                {% ifequal page all_records.number %}
+                                                    <li class="am-active"><a
+                                                            href="?{{ page.querystring }}">{{ page }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+                                                    </li>
+                                                {% endifequal %}
+                                            {% else %}
+                                                <li class="none"><a href="">...</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if all_records.has_next %}
+                                            <li><a href="?{{ all_records.next_page_number.querystring }}">»</a></li>
+                                        {% endif %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js_2 %}
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.datatables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/customize.js' %}"></script>
+{% endblock %}

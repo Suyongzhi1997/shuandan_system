@@ -1,0 +1,255 @@
+{% extends 'sh_base.html' %}
+{% load static %}
+{% load teacher_filters %}
+
+{% block custom_js_1 %}
+    <script src="{% static 'js/theme.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body  am-fr">
+
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-9">
+                                <div class="am-form-group">
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <form method="post"
+                                                  action="{% url 'record:sh_reset_checks' %}?next={{ request.get_full_path }}"
+                                                  style="padding-top: 0px;">
+                                                <div class="am-form-group" style="margin-bottom: 0px">
+                                                    <button class="am-btn am-btn-success am-btn-primary am-btn-xs"
+                                                            onclick="submit_check(this)"><span
+                                                            class="am-icon-paw"></span> 提交
+                                                    </button>
+                                                    <input type="hidden" id="check_ids" name="check_ids">
+                                                    {% csrf_token %}
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <form method="post"
+                                                  action="{% url 'record:sh_delete_records' %}?next={{ request.get_full_path }}"
+                                                  style="padding-top: 0px;">
+                                                <div class="am-form-group" style="margin-bottom: 0px">
+                                                    <button class="am-btn am-btn-danger am-btn-primary am-btn-xs"
+                                                            onclick="submit_delete(this)"><span
+                                                            class="am-icon-trash"></span> 删除
+                                                    </button>
+                                                    <input type="hidden" id="delete_check_ids" name="delete_check_ids">
+                                                    {% csrf_token %}
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-12 am-u-lg-3" style="padding-bottom:14px;">
+                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " placeholder="请输入ASIN查找"
+                                           id="search_keywords">
+                                    <span class="am-input-group-btn">
+            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
+                    type="button" id="jsSearchBtn" onclick="search_record()"></button>
+          </span>
+                                </div>
+                            </div>
+
+                            <div class="am-u-sm-12">
+                                <table width="100%"
+                                       class="am-table am-table-compact am-table-striped tpl-table-black am-table-centered">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAll"></th>
+                                        <th>提交时间</th>
+                                        <th>产品ASIN</th>
+                                        <th>销售价格</th>
+                                        <th>采购成本</th>
+                                        <th>毛利润</th>
+                                        <th>上架时间</th>
+                                        {#                                        <th>产品刷单总数量</th>#}
+                                        <th>最近30天销量</th>
+                                        <th>最近7天销量</th>
+                                        <th>review</th>
+                                        <th>feedback</th>
+                                        <th>直评</th>
+                                        <th>免评数量</th>
+                                        <th>运营人员</th>
+                                        <th>审核状态</th>
+                                        <th>备注</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for record in all_records.object_list %}
+                                        <tr class="gradeX">
+                                            <td style="vertical-align:middle" value="{{ record.id }}">
+                                                <input name="ids" type="checkbox" class="record-checkbox"
+                                                       value="{{ record.id }}">
+                                            </td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.add_time | date:"Y-m-d" }}">{{ record.add_time | date:"Y-m-d" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.asin }}">{{ record.asin }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.c_price }}">{{ record.c_price }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.purchase_cost }}">{{ record.purchase_cost }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.product_profit }}">{{ record.product_profit }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.product_upload_time | date:"Y-m-d" }}">{{ record.product_upload_time | date:"Y-m-d" }}</td>
+                                            {#                                            <td class="am-text-middle"#}
+                                            {#                                                title="{{ record.brush_number }}">{{ record.brush_number }}</td>#}
+                                            <td class="am-text-middle"
+                                                title="{{ record.sale_30_number }}">{{ record.sale_30_number }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.sale_7_number }}">{{ record.sale_7_number }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.review_number }}">{{ record.review_number }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.feedback }}">{{ record.feedback }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.direct_review }}">{{ record.direct_review }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.free_review_number }}">{{ record.free_review_number }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.user.username }}">
+                                                {% if record.user.nick_name %}{{ record.user.nick_name }}{% else %}
+                                                    {{ record.user.username }}{% endif %}</td>
+                                            <td class="am-text-middle">
+                                                <div class="am-center">
+                                                    <label class="am-center">
+                                                        <select id="audit_results" style="
+                                    height: 35px;
+                                    width: 80px;
+                                    border: 1px solid #e6e6e6;
+                                    padding-left: 8px;
+                                    font-size: 16px;
+                                    font-weight: 400;
+                                    text-align: center;
+                                    text-align-last: center;
+                                " name="audit_results">
+                                                            <option value="pass"
+                                                                    {% if record.audit_results == 'pass' %}selected{% endif %}>
+                                                                通过
+                                                            </option>
+                                                            <option value="fail"
+                                                                    {% if record.audit_results == 'fail' %}selected{% endif %}>
+                                                                不通过
+                                                            </option>
+                                                        </select>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.remark }}">{{ record.remark | truncate_word }}</td>
+                                            <td class="am-text-middle">
+                                                <form method="post"
+                                                      action="{% url 'record:sh_reset_check' %}?next={{ request.get_full_path }}"
+                                                      style="padding-top: 0px;">
+                                                    <div class="am-form-group" style="margin-bottom: 0px">
+                                                        <button type="submit"
+                                                                class="am-btn am-btn-danger am-btn-secondary am-btn-xs"><span
+                                                                class="am-icon-gavel"></span> 撤回
+                                                        </button>
+                                                        <input type="hidden" value="{{ record.id }}" name="record_id">
+                                                        {% csrf_token %}
+                                                    </div>
+                                                </form>
+
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="am-u-lg-12 am-cf">
+
+                                <div class="am-fr">
+                                    <ul class="am-pagination tpl-pagination">
+                                        {% if all_records.has_previous %}
+                                            <li class="am-disabled"><a
+                                                    href="?{{ all_records.previous_page_number.querystring }}">«</a>
+                                            </li>
+                                        {% endif %}
+                                        {% for page in all_records.pages %}
+                                            {% if page %}
+                                                {% ifequal page all_records.number %}
+                                                    <li class="am-active"><a
+                                                            href="?{{ page.querystring }}">{{ page }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+                                                    </li>
+                                                {% endifequal %}
+                                            {% else %}
+                                                <li class="none"><a href="">...</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if all_records.has_next %}
+                                            <li><a href="?{{ all_records.next_page_number.querystring }}">»</a></li>
+                                        {% endif %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-prompt widget-body am-fr" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <form class="am-form tpl-form-line-form" method="post"
+                  action="{% url 'record:sh_check' %}?next={{ request.get_full_path }}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="record_id" id="record_id">
+                <div class="am-form-group">
+                    <label for="modal_audit_results" class="am-u-sm-3 am-form-label">是否通过</label>
+                    <div class="am-u-sm-9">
+                        <label class="am-fl">
+                            <select id="modal_audit_results" style="
+                                    height: 35px;
+                                    width: 200px;
+                                    border: 1px solid #e6e6e6;
+                                    padding-left: 8px;
+                                    font-size: 16px;
+                                    font-weight: 400;
+                                " name="audit_results">
+                                <option value="pass">通过</option>
+                                <option value="fail">不通过</option>
+                            </select>
+                            <i class="am-selected-icon am-icon-caret-down"
+                               style="position: absolute; top: 5px; left: 193px;"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="remark" class="am-u-sm-3 am-form-label">备注</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入备注" id="remark" name="remark">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-u-sm-9 am-u-sm-push-3 am-fr">
+                        <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js_2 %}
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.datatables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/customize.js' %}"></script>
+{% endblock %}

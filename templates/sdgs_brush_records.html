@@ -1,0 +1,242 @@
+{% extends 'sdgs_base.html' %}
+{% load static %}
+{% load teacher_filters %}
+
+{% block custom_js_1 %}
+    <script src="{% static 'js/theme.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body  am-fr">
+
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-9">
+                                <div class="am-form-group">
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <button class="am-btn am-btn-default am-btn-success am-btn-xs"
+                                                    onclick="sdgs_download_file()"><span
+                                                    class="am-icon-download"></span> 导出
+                                            </button>
+                                        </div>
+                                        {% if not filter_type or filter_type == 'unsettlement' %}
+                                                <a class="am-btn am-btn-default am-btn-primary am-btn-xs"
+                                                        href="{% url 'record:sdgs_brush_records' %}?filter_type=settlement"><span
+                                                        class="am-icon-filter"></span> 过滤：已结算
+                                                </a>
+                                            {% elif filter_type == 'settlement' %}
+                                                <a class="am-btn am-btn-default am-btn-warning am-btn-xs"
+                                                        href="{% url 'record:sdgs_brush_records' %}?filter_type=unsettlement"><span
+                                                        class="am-icon-filter"></span> 过滤：未结算
+                                                </a>
+                                            {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="am-u-sm-12 am-u-md-12 am-u-lg-3" style="padding-bottom:14px;">
+                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " placeholder="请输入ASIN查找"
+                                           id="search_keywords">
+                                    <span class="am-input-group-btn">
+            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
+                    type="button" id="jsSearchBtn" onclick="search_record()"></button>
+          </span>
+                                </div>
+                            </div>
+
+                            <div class="am-u-sm-12">
+                                <table width="100%"
+                                       class="am-table am-table-compact am-table-striped tpl-table-black am-table-centered">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAll"></th>
+                                        <th>站点</th>
+                                        <th>店铺</th>
+                                        <th>中文名</th>
+                                        <th>SKU</th>
+                                        <th>ASIN</th>
+                                        <th>刷单词</th>
+                                        <th>feedback</th>
+                                        <th>留评</th>
+                                        <th>直评</th>
+                                        <th>免评</th>
+                                        <th>关键词页数</th>
+                                        <th>主图片</th>
+                                        <th>关键词链接</th>
+                                        <th>产品售价</th>
+                                        <th>订单号</th>
+                                        <th>刷单费用</th>
+                                        <th>留评反馈</th>
+                                        <th>订单状态</th>
+                                        <th>结算状态</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for record in all_records.object_list %}
+                                        <tr class="gradeX">
+                                            <td style="vertical-align:middle" value="{{ record.id }}">
+                                                <input name="ids" type="checkbox" class="record-checkbox"
+                                                       value="{{ record.id }}">
+                                            </td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.site }}">{{ record.site | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.shop }}">{{ record.shop | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.product_chinese_name }}">{{ record.product_chinese_name | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.sku }}">{{ record.sku | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.asin }}"><a href="{{ record.record_src }}"
+                                                                             target="_blank">{{ record.asin }}</a></td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.order_word }}">{{ record.order_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.feedback }}">{{ record.feedback | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.review_number }}">{{ record.review_number | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.direct_review }}">{{ record.direct_review | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.free_review_number }}">{{ record.free_review_number | truncate_word }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.key_word_page_number }}">{{ record.key_word_page_number | truncate_word }}</td>
+                                            <td>
+                                                <a href="{{ MEDIA_URL }}{{ record.main_image }}" target="_blank"><img
+                                                        src="{{ MEDIA_URL }}{{ record.main_image }}"
+                                                        class="tpl-table-line-img" alt="" style="width: 100px; height: 100px;"></a>
+                                            </td>
+                                            <td class="am-text-middle" title="{{ record.key_word_link }}"><a
+                                                    href="{% if 'http' in record.key_word_link %}{{ record.key_word_link }}{% else %}https://{{ record.key_word_link }}{% endif %}"
+                                                    target="_blank">{{ record.key_word_link | truncate_word }}</a></td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.c_price }}">{{ record.c_price }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.order_number }}">{{ record.order_number }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.brush_money }}">{{ record.brush_money }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.review_feedback }}">
+                                                <a href="{% if 'http' in record.review_feedback %}{{ record.review_feedback }}{% else %}https://{{ record.key_word_link }}{% endif %}"
+                                                                                          target="_blank">{{ record.review_feedback | truncate_word }}
+                                                </a>
+                                            </td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record_status }}">{{ record.get_record_status_display }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ record.record_settlement }}">{{ record.get_record_settlement_display }}</td>
+                                            <td class="am-text-middle">
+                                                <button type="button"
+                                                        class="am-btn am-btn-default am-btn-secondary am-btn-xs"
+                                                        onclick="sdgs_edit_feedback(this)"><span
+                                                        class="am-icon-pencil"></span>编辑
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="am-u-lg-12 am-cf">
+
+                                <div class="am-fr">
+                                    <ul class="am-pagination tpl-pagination">
+                                        {% if all_records.has_previous %}
+                                            <li class="am-disabled"><a
+                                                    href="?{{ all_records.previous_page_number.querystring }}">«</a>
+                                            </li>
+                                        {% endif %}
+                                        {% for page in all_records.pages %}
+                                            {% if page %}
+                                                {% ifequal page all_records.number %}
+                                                    <li class="am-active"><a
+                                                            href="?{{ page.querystring }}">{{ page }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+                                                    </li>
+                                                {% endifequal %}
+                                            {% else %}
+                                                <li class="none"><a href="">...</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if all_records.has_next %}
+                                            <li><a href="?{{ all_records.next_page_number.querystring }}">»</a></li>
+                                        {% endif %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-prompt widget-body am-fr" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <form class="am-form tpl-form-line-form" method="post"
+                  action="{% url 'record:sdgs_brush_edit' %}?next={{ request.get_full_path }}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="record_id" id="record_id">
+                <div class="am-form-group">
+                    <label for="order_number" class="am-u-sm-3 am-form-label">订单号</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入订单号" id="order_number" name="order_number">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="brush_money" class="am-u-sm-3 am-form-label">刷单费用</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入刷单费用" id="brush_money" name="brush_money">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="review_feedback" class="am-u-sm-3 am-form-label">留评反馈</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入留评反馈" id="review_feedback" name="review_feedback">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="record_status" class="am-u-sm-3 am-form-label">订单状态</label>
+                    <div class="am-u-sm-9">
+                        <label class="am-fl">
+                            <select id="record_status" style="
+                                    height: 35px;
+                                    width: 200px;
+                                    border: 1px solid #e6e6e6;
+                                    padding-left: 8px;
+                                    font-size: 16px;
+                                    font-weight: 400;
+                                " name="record_status">
+                                <option value="no order">无订单</option>
+                                <option value="already pay">已付款</option>
+                                <option value="unpaid">未付款</option>
+                            </select>
+                            <i class="am-selected-icon am-icon-caret-down"
+                               style="position: absolute; top: 5px; left: 193px;"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-u-sm-9 am-u-sm-push-3 am-fr">
+                        <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js_2 %}
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.datatables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/customize.js' %}"></script>
+{% endblock %}

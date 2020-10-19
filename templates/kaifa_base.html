@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="icon" type="image/png" href="{% static 'i/favicon.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'i/app-icon72x72@2x.png' %}">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/amazeui.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/amazeui.datatables.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <style>
+        .img-area {
+            width: 100px;
+            height: auto;
+            position: relative;
+        }
+        .img-area img{
+            width: 100%;
+            height: 100%;
+        }
+        .img-area .img-input{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+    </style>
+    {% block custom_css %}{% endblock %}
+</head>
+
+<body class="theme-white">
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    <header>
+        <!-- logo -->
+        <div class="am-fl tpl-header-logo">
+            <a href="{% url 'kf_index' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+        </div>
+
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
+
+                    </span>
+            </div>
+            <div class="am-center" style="width: 18%">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="tpl-msg am-alert {% if message.tags %}am-alert-{{ message.tags }}{% endif %}"
+                             data-am-alert>
+                            <button type="button" class="am-close">&times;</button>
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- 其它功能-->
+            <div class="am-fr tpl-header-navbar">
+                <ul>
+                    <!-- 欢迎语 -->
+                    <li class="am-text-sm tpl-header-navbar-welcome">
+                        <a href="javascript:;">欢迎你, <span>{{ user.username }}</span> </a>
+                    </li>
+                    <!-- 退出 -->
+                    <li class="am-text-sm">
+                        <a href="{% url 'logout' %}">
+                            <span class="am-icon-sign-out"></span> 退出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        <!-- 用户信息 -->
+        <div class="tpl-sidebar-user-panel">
+            <div class="tpl-user-panel-slide-toggleable">
+                <div class="tpl-user-panel-profile-picture am-center">
+                    <img src="{{ MEDIA_URL }}{{ user.image }}" alt="">
+                </div>
+                <span class="user-panel-logged-in-text am-text-center">
+                        <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
+                        {{ user.username }}
+                    </span>
+            </div>
+        </div>
+
+        <!-- 菜单 -->
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-link">
+                <a href="{% url 'kf_index' %}" class="{% if request.path == '/kf/' %}active{% endif %}">
+                    <i class="am-icon-home sidebar-nav-link-logo"></i> 接单页面
+                </a>
+            </li>
+        <li class="sidebar-nav-link">
+                <a href="{% url 'record:favorite_records' %}" class="{% if request.path == '/record/favorite/records/' %}active{% endif %}">
+                    <i class="am-icon-star sidebar-nav-link-logo"></i> 接单收藏页面
+                </a>
+            </li>
+            <hr>
+            <li class="sidebar-nav-link">
+                    <a href="{% url 'record:feedback' %}" class="{% if request.path == '/record/feedback/' %}active{% endif %}">
+                        <i class="am-icon-file sidebar-nav-link-logo"></i> 反馈页面
+                    </a>
+            </li>
+            <li class="sidebar-nav-link">
+                    <a href="{% url 'record:feedback_records' %}" class="{% if request.path == '/record/favorite/fb/records/' %}active{% endif %}">
+                        <i class="am-icon-star-o sidebar-nav-link-logo"></i> 反馈收藏页面
+                    </a>
+            </li>
+            <hr>
+            <li class="sidebar-nav-link">
+                    <a href="{% url 'record:brush_money' %}" class="{% if request.path == '/record/brush_money/' %}active{% endif %}">
+                        <i class="am-icon-dollar sidebar-nav-link-logo"></i> 刷单费用查询页面
+                    </a>
+            </li>
+            <li class="sidebar-nav-link">
+                    <a href="{% url 'record:sum_brush_money' %}" class="{% if request.path == '/record/sum_brush_money/' %}active{% endif %}">
+                        <i class="am-icon-dollar sidebar-nav-link-logo"></i> 刷单费用总统计页面
+                    </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 内容区域 -->
+    {% block content %}{% endblock %}
+</div>
+{% block custom_js_2 %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load teacher_filters %}
+
+{% block custom_js_1 %}
+    <script src="{% static 'js/theme.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-body  am-fr">
+{#                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">#}
+{#                                <div class="am-form-group">#}
+{#                                    <div class="am-btn-toolbar">#}
+{#                                        <div class="am-btn-group am-btn-group-xs">#}
+{#                                            <form method="post"#}
+{#                                                  action="{% url 'promote:sh_submit_project' %}?next={{ request.get_full_path }}"#}
+{#                                                  style="padding-top: 0px;">#}
+{#                                                <div class="am-form-group" style="margin-bottom: 0px">#}
+{#                                                    <button class="am-btn am-btn-success am-btn-primary am-btn-xs"#}
+{#                                                            onclick="submit_check(this)"><span#}
+{#                                                            class="am-icon-paw"></span> 提交#}
+{#                                                    </button>#}
+{#                                                    <input type="hidden" id="check_ids" name="check_ids">#}
+{#                                                    {% csrf_token %}#}
+{#                                                </div>#}
+{#                                            </form>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+                            <div class="am-u-sm-12">
+                                <table width="100%"
+                                       class="am-table am-table-compact am-table-striped tpl-table-black am-table-centered">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAll"></th>
+                                        <th>提交日期</th>
+                                        <th>asin</th>
+                                        <th>运营</th>
+                                        <th>内容</th>
+                                        <th>运营备注</th>
+                                        <th>公司</th>
+                                        <th>费用</th>
+                                        <th>审核备注</th>
+                                        <th>状态</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for info in all_infos.object_list %}
+                                        <tr class="gradeX">
+                                            <td style="vertical-align:middle" value="{{ info.id }}">
+                                                <input name="ids" type="checkbox" class="record-checkbox"
+                                                       value="{{ info.id }}">
+                                            </td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.add_time | date:"Y-m-d" }}">{{ info.add_time | date:"Y-m-d" | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.asin | default_if_none:"" }}">{{ info.asin | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.user.nick_name | default_if_none:"" }}">{{ info.user.nick_name | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.content | default_if_none:"" }}">{{ info.content | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.yy_remark | default_if_none:"" }}">{{ info.yy_remark | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.company | default_if_none:"" }}">{{ info.company | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.cost | default_if_none:"" }}">{{ info.cost | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.sh_remark | default_if_none:"" }}">{{ info.sh_remark | default_if_none:"" }}</td>
+                                            <td class="am-text-middle"
+                                                title="{{ info.status }}">{{ info.get_status_display }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="am-u-lg-12 am-cf">
+
+                                <div class="am-fr">
+                                    <ul class="am-pagination tpl-pagination">
+                                        {% if all_infos.has_previous %}
+                                            <li class="am-disabled"><a
+                                                    href="?{{ all_infos.previous_page_number.querystring }}">«</a>
+                                            </li>
+                                        {% endif %}
+                                        {% for page in all_infos.pages %}
+                                            {% if page %}
+                                                {% ifequal page all_infos.number %}
+                                                    <li class="am-active"><a
+                                                            href="?{{ page.querystring }}">{{ page }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+                                                    </li>
+                                                {% endifequal %}
+                                            {% else %}
+                                                <li class="none"><a href="">...</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if all_infos.has_next %}
+                                            <li><a href="?{{ all_infos.next_page_number.querystring }}">»</a></li>
+                                        {% endif %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-prompt widget-body am-fr" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <form class="am-form tpl-form-line-form" method="post"
+                  action="{% url 'promote:sh_edit_info' %}?next={{ request.get_full_path }}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="info_id" name="info_id">
+                <div class="am-form-group">
+                    <label for="company" class="am-u-sm-3 am-form-label">公司</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入公司" id="company" name="company" required>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="cost" class="am-u-sm-3 am-form-label">费用</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入费用" id="cost" name="cost" required>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="sh_remark" class="am-u-sm-3 am-form-label">审核备注</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" placeholder="请输入审核备注" id="sh_remark" name="sh_remark">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="am-u-sm-9 am-u-sm-push-3 am-fr">
+                        <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block custom_js_2 %}
+    <script src="{% static 'js/amazeui.min.js' %}"></script>
+    <script src="{% static 'js/amazeui.datatables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/customize.js' %}"></script>
+{% endblock %}
