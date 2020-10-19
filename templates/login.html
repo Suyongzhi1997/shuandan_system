@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="am-g tpl-g">
+        <div class="tpl-login">
+            <div class="tpl-login-content">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="am-alert {% if message.tags %}am-alert-{{ message.tags }}{% endif %}" data-am-alert>
+                            <button type="button" class="am-close">&times;</button>
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <h1 class="am-md-text-center" style="color: #5D98D0">图贸刷单系统</h1>
+                <div class="tpl-login-logo">
+
+                </div>
+
+
+                <form class="am-form tpl-form-line-form" action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="am-form-group">
+                        <input type="text" class="tpl-form-input" placeholder="请输入账号" name="username">
+                    </div>
+
+                    <div class="am-form-group">
+                        <input type="password" class="tpl-form-input" placeholder="请输入密码" name="password">
+                    </div>
+                    <div class="am-form-group">
+                        <button type="submit"
+                                class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">登录
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
