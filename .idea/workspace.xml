@@ -2,75 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87d48906-d72a-48ef-89fa-bbd04cd5063d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/apps/delivery/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/files/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/graphics/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/promote/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/records/adminx.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/records/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/records/templatetags/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/records/templatetags/teacher_filters.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/records/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/records/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/records/utils/util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/shops/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/403.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/404.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/auth_base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/brush_money.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/calendar.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/chart.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/company_freight.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/delivery_infos.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/delivery_infos_sh.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/fb_favorite.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/feedback.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/kaifa_base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/kaifa_index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/kf_favorite.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sd_already_check_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sd_base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sd_brush_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sd_search_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sdgs_base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sdgs_brush_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_already_brush_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_already_check_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_already_product.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_brush_money.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_brush_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_check_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_freight_money.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_product.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_sdgs_brush_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sh_search_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sign-up.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/sum_brush_money.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/table-list-img.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/table-list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/tables.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/test.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/yy_already_check_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/yy_already_product.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/yy_check_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/yy_favorite.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/yy_fb_favorite.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/yy_feedback.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/yy_product.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/yy_wait_check_records.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/yy_wait_product.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/白色.psd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/黑色.psd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/delivery/adminx.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/delivery/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/delivery/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/delivery/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/files/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/files/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/graphics/adminx.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/graphics/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/promote/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/promote/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/promote/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/records/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/records/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/records/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/records/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/users/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shuadan_system/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuadan_system/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/delivery/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/delivery/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/delivery/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/delivery/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/delivery/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/delivery/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/files/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/files/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/files/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/files/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/graphics/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/graphics/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/graphics/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/graphics/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/promote/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/promote/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/promote/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/promote/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/records/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/records/apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shuadan_system/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuadan_system/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,16 +69,16 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/apps/promote" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\workspace\django\shuadan_system\apps\promote" />
+      <recent name="E:\workspace\django\shuadan_system\apps\graphics" />
+      <recent name="E:\workspace\django\shuadan_system\apps\files" />
+      <recent name="E:\workspace\django\shuadan_system\media" />
       <recent name="E:\workspace\django\shuadan_system" />
-      <recent name="E:\workspace\django\shuadan_system\apps\records" />
-      <recent name="E:\workspace\django\shuadan_system\shuadan_system" />
-      <recent name="E:\workspace\django\shuadan_system\templates" />
-      <recent name="E:\workspace\django\shuadan_system\media\image\avatar" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\workspace\django\shuadan_system\apps" />
@@ -180,7 +134,7 @@
       <option name="presentableId" value="Default" />
       <updated>1602926608968</updated>
       <workItem from="1602926611015" duration="9799000" />
-      <workItem from="1603068673007" duration="5420000" />
+      <workItem from="1603068673007" duration="6636000" />
     </task>
     <task id="LOCAL-00001" summary="上传依赖">
       <created>1602928388090</created>
@@ -224,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603070205249</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="创建应用">
+      <created>1603074496696</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1603074496696</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,37 +197,38 @@
     <MESSAGE value="创建 users 模型" />
     <MESSAGE value="增加静态文件" />
     <MESSAGE value="创建 records app" />
-    <option name="LAST_COMMIT_MESSAGE" value="创建 records app" />
+    <MESSAGE value="创建应用" />
+    <option name="LAST_COMMIT_MESSAGE" value="创建应用" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="558" y="24" key="CommitChangelistDialog2" timestamp="1603070204629">
+    <state x="558" y="24" key="CommitChangelistDialog2" timestamp="1603074495939">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="558" y="24" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1603070204629" />
-    <state width="1877" height="422" key="GridCell.Tab.0.bottom" timestamp="1603074457583">
+    <state x="558" y="24" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1603074495939" />
+    <state width="1877" height="422" key="GridCell.Tab.0.bottom" timestamp="1603075652151">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="422" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603074457583" />
-    <state width="1877" height="422" key="GridCell.Tab.0.center" timestamp="1603074457583">
+    <state width="1877" height="422" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603075652151" />
+    <state width="1877" height="422" key="GridCell.Tab.0.center" timestamp="1603075652151">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="422" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603074457583" />
-    <state width="1877" height="422" key="GridCell.Tab.0.left" timestamp="1603074457583">
+    <state width="1877" height="422" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603075652151" />
+    <state width="1877" height="422" key="GridCell.Tab.0.left" timestamp="1603075652150">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="422" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603074457583" />
-    <state width="1877" height="422" key="GridCell.Tab.0.right" timestamp="1603074457583">
+    <state width="1877" height="422" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603075652150" />
+    <state width="1877" height="422" key="GridCell.Tab.0.right" timestamp="1603075652151">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="422" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603074457583" />
+    <state width="1877" height="422" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603075652151" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1602932544972">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1602932544972" />
-    <state x="552" y="249" key="Vcs.Push.Dialog.v2" timestamp="1603070088052">
+    <state x="552" y="249" key="Vcs.Push.Dialog.v2" timestamp="1603074504115">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="249" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603070088052" />
+    <state x="552" y="249" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603074504115" />
     <state x="616" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1603068786636">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

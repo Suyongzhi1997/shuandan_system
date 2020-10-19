@@ -22,7 +22,7 @@ from django.urls import path, re_path, include
 from shuadan_system.settings import MEDIA_ROOT
 
 from users.views import LoginView, LogoutView
-from records.views import IndexView
+from records.views import IndexView, KaifaIndexView
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
